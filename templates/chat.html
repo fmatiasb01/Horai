@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>HORAI Chat</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .chat-box { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .mensaje { margin-bottom: 15px; padding: 10px; border-radius: 5px; }
+        .usuario { background: #e3f2fd; border-left: 4px solid #2196f3; }
+        .bot { background: #f1f8e9; border-left: 4px solid #4caf50; }
+        .form-container { display: flex; gap: 10px; margin-top: 20px; }
+        input[type="text"] { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 12px 20px; background: #2196f3; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #1976d2; }
+        .btn-secondary { background: #6c757d; }
+        .btn-secondary:hover { background: #5a6268; }
+        .btn-success { background: #28a745; }
+        .btn-success:hover { background: #218838; }
+        .chat-messages { max-height: 400px; overflow-y: auto; margin-bottom: 20px; }
+        .empty-state { text-align: center; color: #666; margin: 40px 0; }
+        .timestamp { float: right; color: #666; font-size: 0.8em; }
+        .chat-info { background: #f8f9fa; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-size: 0.9em; color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 HORAI Chat</h1>
+            <div>
+                <a href="/historial"><button class="btn-secondary">📋 Ver Historial</button></a>
+                <a href="/nuevo-chat"><button class="btn-success">🆕 Nuevo Chat</button></a>
+            </div>
+        </div>
+
+        <div class="chat-info">
+            💬 Sesión actual: {{ sesion_id[:8] }}... | 
+            {% if conversaciones %}
+                {{ conversaciones|length }} mensaje(s) en esta conversación
+            {% else %}
+                Nueva conversación
+            {% endif %}
+        </div>
+        
+        <div class="chat-box">
+            <div class="chat-messages">
+                {% if conversaciones %}
+                    {% for c in conversaciones %}
+                        <div class="mensaje usuario">
+                            <strong>Tú:</strong> {{ c.mensaje_usuario }}
+                            <span class="timestamp">{{ c.fecha.strftime('%d/%m/%Y %H:%M') }}</span>
+                        </div>
+                        <div class="mensaje bot">
+                            <strong>HORAI:</strong> {{ c.respuesta_bot }}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <h3>¡Hola! Soy HORAI 👋</h3>
+                        <p>Tu asistente inteligente para optimizar tu rendimiento personal y profesional.</p>
+                        <p>Escribe tu mensaje abajo para comenzar nuestra conversación.</p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <form method="post" action="/enviar" class="form-container">
+                <input type="hidden" name="sesion_id" value="{{ sesion_id }}">
+                <input type="text" name="mensaje_usuario" placeholder="Escribe tu mensaje a HORAI..." required autofocus>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Auto-scroll al final del chat
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.querySelector('.chat-messages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+    </script>
+</body>
+</html>
