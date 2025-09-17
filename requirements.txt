@@ -4,3 +4,5 @@ uvicorn
 pydantic
 jinja2
 groq
+markdown
+python-multipart

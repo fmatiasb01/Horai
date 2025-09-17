@@ -25,22 +25,28 @@ def crear_conversacion_con_ia(db: Session, mensaje_usuario: str, sesion_id: str 
         import uuid
         sesion_id = str(uuid.uuid4())
     
-    # Generar respuesta con IA
-    respuesta_bot_raw = ai_service.generate_response(mensaje_usuario)
-    
-    # Procesar markdown para mejorar el formato
-    respuesta_bot = process_markdown(respuesta_bot_raw)
-    
-    # Guardar conversación
-    conversacion = Conversacion(
-        mensaje_usuario=mensaje_usuario,
-        respuesta_bot=respuesta_bot,
-        sesion_id=sesion_id
-    )
-    db.add(conversacion)
-    db.commit()
-    db.refresh(conversacion)
-    return conversacion
+    try:
+        # Generar respuesta con IA
+        respuesta_bot_raw = ai_service.generate_response(mensaje_usuario)
+        
+        # Procesar markdown para mejorar el formato
+        respuesta_bot = process_markdown(respuesta_bot_raw)
+        
+        # Guardar conversación
+        conversacion = Conversacion(
+            mensaje_usuario=mensaje_usuario,
+            respuesta_bot=respuesta_bot,
+            sesion_id=sesion_id
+        )
+        db.add(conversacion)
+        db.commit()
+        db.refresh(conversacion)
+        return conversacion
+    except Exception as e:
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"Error en crear_conversacion_con_ia: {str(e)}\n{error_details}")
+        raise
 
 def obtener_conversaciones_por_sesion(db: Session, sesion_id: str):
     return db.query(Conversacion).filter(

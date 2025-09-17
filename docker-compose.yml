@@ -10,6 +10,7 @@ services:
       - ./horai.db:/app/horai.db
     environment:
       - DATABASE_URL=sqlite:///horai.db
+      - GROQ_API_KEY=${GROQ_API_KEY}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]

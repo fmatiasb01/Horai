@@ -46,19 +46,30 @@ def nuevo_chat(request: Request, db: Session = Depends(get_db)):
 
 @app.post("/enviar", response_class=HTMLResponse)
 async def enviar_mensaje(request: Request, db: Session = Depends(get_db)):
-    form = await request.form()
-    mensaje_usuario = str(form.get("mensaje_usuario", "")).strip()
-    sesion_id = str(form.get("sesion_id", "")).strip()
-    
-    if not mensaje_usuario:
-        return RedirectResponse("/", status_code=303)
-    
-    if not sesion_id:
-        sesion_id = str(uuid.uuid4())
-    
-    # Usar IA para generar respuesta
-    crear_conversacion_con_ia(db, mensaje_usuario, sesion_id)
-    return RedirectResponse(f"/?sesion_id={sesion_id}", status_code=303)
+    try:
+        form = await request.form()
+        mensaje_usuario = str(form.get("mensaje_usuario", "")).strip()
+        sesion_id = str(form.get("sesion_id", "")).strip()
+        
+        if not mensaje_usuario:
+            return RedirectResponse("/", status_code=303)
+        
+        if not sesion_id:
+            sesion_id = str(uuid.uuid4())
+        
+        # Usar IA para generar respuesta
+        crear_conversacion_con_ia(db, mensaje_usuario, sesion_id)
+        return RedirectResponse(f"/?sesion_id={sesion_id}", status_code=303)
+    except Exception as e:
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"Error en /enviar: {str(e)}\n{error_details}")
+        return templates.TemplateResponse("chat.html", {
+            "request": request,
+            "error": f"Error: {str(e)}",
+            "conversaciones": obtener_conversaciones_por_sesion(db, sesion_id) if sesion_id else [],
+            "sesion_id": sesion_id
+        })
 
 @app.get("/historial", response_class=HTMLResponse)
 def mostrar_historial(request: Request, db: Session = Depends(get_db)):
