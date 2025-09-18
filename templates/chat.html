@@ -2,81 +2,446 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>HORAI Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HORAI - Asistente Personal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .chat-box { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .mensaje { margin-bottom: 15px; padding: 10px; border-radius: 5px; }
-        .usuario { background: #e3f2fd; border-left: 4px solid #2196f3; }
-        .bot { background: #f1f8e9; border-left: 4px solid #4caf50; }
-        .form-container { display: flex; gap: 10px; margin-top: 20px; }
-        input[type="text"] { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 4px; }
-        button { padding: 12px 20px; background: #2196f3; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #1976d2; }
-        .btn-secondary { background: #6c757d; }
-        .btn-secondary:hover { background: #5a6268; }
-        .btn-success { background: #28a745; }
-        .btn-success:hover { background: #218838; }
-        .chat-messages { max-height: 400px; overflow-y: auto; margin-bottom: 20px; }
-        .empty-state { text-align: center; color: #666; margin: 40px 0; }
-        .timestamp { float: right; color: #666; font-size: 0.8em; }
-        .chat-info { background: #f8f9fa; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-size: 0.9em; color: #6c757d; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 1px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .chat-info {
+            background: #f8fafc;
+            padding: 20px 30px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .session-indicator {
+            background: #e2e8f0;
+            color: #475569;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: 'Courier New', monospace;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: #fafbfc;
+        }
+
+        .mensaje {
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            animation: slideInUp 0.3s ease;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .usuario {
+            align-items: flex-end;
+        }
+
+        .bot {
+            align-items: flex-start;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 16px 20px;
+            border-radius: 12px;
+            position: relative;
+            word-wrap: break-word;
+            line-height: 1.5;
+        }
+
+        .usuario .message-bubble {
+            background: #1e293b;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bot .message-bubble {
+            background: white;
+            color: #1f2937;
+            border: 1px solid #e5e7eb;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .message-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .usuario .message-info {
+            justify-content: flex-end;
+        }
+
+        .avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .usuario .avatar {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .bot .avatar {
+            background: #1e293b;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            color: #64748b;
+        }
+
+        .form-container {
+            padding: 25px 30px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 12px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .send-btn {
+            padding: 16px 24px;
+            background: #1e293b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .send-btn:hover {
+            background: #334155;
+            transform: translateY(-1px);
+        }
+
+        .timestamp {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        /* Estilos para respuestas de HORAI */
+        .bot .message-bubble .horai-paragraph {
+            margin: 8px 0;
+            line-height: 1.6;
+            color: #374151;
+        }
+        
+        .bot .message-bubble .horai-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 16px 0 12px 0;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+        }
+        
+        .bot .message-bubble .horai-bold {
+            color: #1e293b;
+            font-weight: 600;
+            background: #f1f5f9;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        .bot .message-bubble .horai-list {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+        
+        .bot .message-bubble .horai-list li {
+            margin: 6px 0;
+            line-height: 1.5;
+            color: #374151;
+        }
+        
+        .bot .message-bubble .horai-code {
+            background: #f1f5f9;
+            color: #3b82f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 16px;
+                min-height: 90vh;
+            }
+
+            .header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .chat-messages {
+                padding: 20px;
+            }
+
+            .message-bubble {
+                max-width: 85%;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🤖 HORAI Chat</h1>
-            <div>
-                <a href="/historial"><button class="btn-secondary">📋 Ver Historial</button></a>
-                <a href="/nuevo-chat"><button class="btn-success">🆕 Nuevo Chat</button></a>
+            <h1>
+                <div class="logo">H</div>
+                HORAI
+            </h1>
+            <div class="header-buttons">
+                <a href="/historial" class="btn btn-secondary">
+                    Historial
+                </a>
+                <a href="/nuevo-chat" class="btn btn-primary">
+                    Nuevo Chat
+                </a>
             </div>
         </div>
 
         <div class="chat-info">
-            💬 Sesión actual: {{ sesion_id[:8] }}... | 
-            {% if conversaciones %}
-                {{ conversaciones|length }} mensaje(s) en esta conversación
-            {% else %}
-                Nueva conversación
-            {% endif %}
+            <div class="session-indicator">
+                Sesión: {{ sesion_id[:8] }}
+            </div>
+            <div>
+                {% if conversaciones %}
+                    {{ conversaciones|length }} mensaje(s) en esta conversación
+                {% else %}
+                    Nueva conversación iniciada
+                {% endif %}
+            </div>
         </div>
         
-        <div class="chat-box">
-            <div class="chat-messages">
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
                 {% if conversaciones %}
                     {% for c in conversaciones %}
                         <div class="mensaje usuario">
-                            <strong>Tú:</strong> {{ c.mensaje_usuario }}
-                            <span class="timestamp">{{ c.fecha.strftime('%d/%m/%Y %H:%M') }}</span>
+                            <div class="message-info">
+                                <div class="avatar">TU</div>
+                                <span>Usuario</span>
+                                <span class="timestamp">{{ c.fecha.strftime('%H:%M') }}</span>
+                            </div>
+                            <div class="message-bubble">
+                                {{ c.mensaje_usuario }}
+                            </div>
                         </div>
                         <div class="mensaje bot">
-                            <strong>HORAI:</strong> {{ c.respuesta_bot }}
+                            <div class="message-info">
+                                <div class="avatar">H</div>
+                                <span>HORAI</span>
+                                <span class="timestamp">{{ c.fecha.strftime('%H:%M') }}</span>
+                            </div>
+                            <div class="message-bubble">
+                                {{ c.respuesta_bot | safe }}
+                            </div>
                         </div>
                     {% endfor %}
                 {% else %}
                     <div class="empty-state">
-                        <h3>¡Hola! Soy HORAI 👋</h3>
-                        <p>Tu asistente inteligente para optimizar tu rendimiento personal y profesional.</p>
-                        <p>Escribe tu mensaje abajo para comenzar nuestra conversación.</p>
+                        <h3>Bienvenido a HORAI</h3>
+                        <p>Asistente inteligente especializado en productividad y organización personal.</p>
+                        <p>Inicia una conversación para optimizar tu rendimiento profesional.</p>
                     </div>
                 {% endif %}
             </div>
             
             <form method="post" action="/enviar" class="form-container">
                 <input type="hidden" name="sesion_id" value="{{ sesion_id }}">
-                <input type="text" name="mensaje_usuario" placeholder="Escribe tu mensaje a HORAI..." required autofocus>
-                <button type="submit">Enviar</button>
+                <input type="text" name="mensaje_usuario" class="message-input" placeholder="Escribe tu mensaje..." required autofocus>
+                <button type="submit" class="send-btn">Enviar</button>
             </form>
         </div>
     </div>
 
     <script>
-        // Auto-scroll al final del chat
         document.addEventListener('DOMContentLoaded', function() {
-            const chatMessages = document.querySelector('.chat-messages');
+            const chatMessages = document.getElementById('chatMessages');
             chatMessages.scrollTop = chatMessages.scrollHeight;
         });
     </script>
