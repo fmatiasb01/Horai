@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # Crear la conexión a la base de datos SQLite
-SQLALCHEMY_DATABASE_URL = "sqlite:///./horai.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:////app/data/horai.db"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
