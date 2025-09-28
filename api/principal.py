@@ -71,6 +71,21 @@ async def enviar_mensaje(request: Request, db: Session = Depends(get_db)):
             "sesion_id": sesion_id
         })
 
+@app.get("/login", response_class=HTMLResponse)
+def mostrar_login(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+@app.get("/logout")
+def logout():
+    # Aquí iría la lógica para cerrar sesión (por ejemplo, limpiar cookies)
+    return RedirectResponse("/", status_code=303)
+
+# Ruta para inicio
+@app.get("/inicio", response_class=HTMLResponse)
+def mostrar_inicio(request: Request):
+    return templates.TemplateResponse("inicio.html", {"request": request})
+
+
 @app.get("/historial", response_class=HTMLResponse)
 def mostrar_historial(request: Request, db: Session = Depends(get_db)):
     sesiones_agrupadas = obtener_sesiones_agrupadas(db)
