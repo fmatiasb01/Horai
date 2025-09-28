@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horai - Logout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .logout-container {
+      max-width: 400px;
+      margin: 40px auto;
+      background: rgba(255,255,255,0.97);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      padding: 32px 28px 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .horai-header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .horai-header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #3b82f6;
+      letter-spacing: 2px;
+    }
+    .LogoutCard {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 32px 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .LogoutCard h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #3b82f6;
+      margin-bottom: 10px;
+    }
+    .LogoutCard p {
+      font-size: 16px;
+      color: #334155;
+    }
+    .Button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 0;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 18px;
+    }
+    .Button:hover {
+      background: #2563eb;
+    }
+    .horai-footer {
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    @media (max-width: 600px) {
+      .logout-container {
+        max-width: 98vw;
+        padding: 18px 8px 12px 8px;
+      }
+      .horai-header h1 {
+        font-size: 24px;
+      }
+      .LogoutCard {
+        padding: 18px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="logout-container">
+    <header class="horai-header">
+      <h1>Horai</h1>
+    </header>
+    <main>
+      <section class="LogoutCard">
+        <h2>Sesión cerrada</h2>
+        <p>Has cerrado sesión correctamente.</p>
+        <a href="/login" class="Button">Volver a iniciar sesión</a>
+      </section>
+    </main>
+    <footer class="horai-footer">
+      <p>© 2025 Horai</p>
+    </footer>
+  </div>
+  <script>
+    // Navegación mock para login
+    document.querySelector('.Button').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = '/login';
+    });
+  </script>
+</body>
+</html>

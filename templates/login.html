@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horai - Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .login-container {
+      max-width: 400px;
+      margin: 40px auto;
+      background: rgba(255,255,255,0.97);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      padding: 32px 28px 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .horai-header {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .horai-header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: #3b82f6;
+      letter-spacing: 2px;
+    }
+    .LoginForm {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .LoginForm label {
+      font-size: 15px;
+      font-weight: 500;
+      color: #334155;
+      margin-bottom: 4px;
+    }
+    .LoginForm input {
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 2px solid #e5e7eb;
+      font-size: 15px;
+      background: #f9fafb;
+      transition: border 0.2s;
+    }
+    .LoginForm input:focus {
+      border-color: #3b82f6;
+      outline: none;
+    }
+    .Button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 0;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .Button:hover {
+      background: #2563eb;
+    }
+    .error {
+      color: #ef4444;
+      font-size: 13px;
+      min-height: 18px;
+    }
+    .horai-footer {
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    @media (max-width: 600px) {
+      .login-container {
+        max-width: 98vw;
+        padding: 18px 8px 12px 8px;
+      }
+      .horai-header h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <header class="horai-header">
+      <h1>Horai</h1>
+    </header>
+    <form class="LoginForm" id="loginForm">
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" name="email" placeholder="usuario@ejemplo.com" required>
+      <span class="error" id="emailError"></span>
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" name="password" placeholder="••••••••" required>
+      <span class="error" id="passwordError"></span>
+      <button type="submit" class="Button">Ingresar</button>
+    </form>
+    <footer class="horai-footer">
+      <p>© 2025 Horai</p>
+    </footer>
+  </div>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      let valid = true;
+      const email = document.getElementById('email');
+      const password = document.getElementById('password');
+      const emailError = document.getElementById('emailError');
+      const passwordError = document.getElementById('passwordError');
+      emailError.textContent = '';
+      passwordError.textContent = '';
+      // Validación email
+      if (!email.value) {
+        emailError.textContent = 'Campo obligatorio.';
+        valid = false;
+      } else if (!/^\S+@\S+\.\S+$/.test(email.value)) {
+        emailError.textContent = 'Formato de email inválido.';
+        valid = false;
+      }
+      // Validación password
+      if (!password.value) {
+        passwordError.textContent = 'Campo obligatorio.';
+        valid = false;
+      }
+      if (!valid) e.preventDefault();
+    });
+  </script>
+</body>
+</html>
