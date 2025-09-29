@@ -9,35 +9,30 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #f1f5f9;
       min-height: 100vh;
       padding: 20px;
     }
     .home-container {
-      max-width: 700px;
-      margin: 40px auto;
-      background: rgba(255,255,255,0.97);
+      max-width: 1000px;
+      margin: 20px auto;
+      background: #fff;
       border-radius: 24px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-      padding: 32px 28px 24px 28px;
+      padding: 32px;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 20px;
     }
-    .horai-header {
+    header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-      color: white;
-      padding: 18px 24px;
-      border-radius: 16px;
-      margin-bottom: 10px;
     }
-    .horai-header h1 {
+    header h1 {
       font-size: 28px;
       font-weight: 700;
-      letter-spacing: 1px;
+      color: #1e293b;
     }
     .horai-nav .Button {
       background: #3b82f6;
@@ -51,66 +46,139 @@
       transition: background 0.2s;
       text-decoration: none;
     }
-    .horai-nav .Button:hover {
-      background: #2563eb;
+    .horai-nav .Button:hover { background: #2563eb; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
     }
-    .HomeCard {
+    .card {
       background: #f8fafc;
       border-radius: 16px;
-      padding: 32px 24px;
+      padding: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      text-align: center;
     }
-    .HomeCard h2 {
-      font-size: 22px;
+    .card h2 {
+      font-size: 18px;
       font-weight: 600;
-      color: #3b82f6;
-      margin-bottom: 10px;
+      color: #1e293b;
+      margin-bottom: 8px;
     }
-    .HomeCard p {
-      font-size: 16px;
+    .card p, .card li {
+      font-size: 15px;
       color: #334155;
+      margin-bottom: 6px;
+      list-style: none;
     }
-    .horai-footer {
+    .progress {
+      background: #e2e8f0;
+      border-radius: 8px;
+      height: 8px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .progress-bar {
+      background: #3b82f6;
+      height: 100%;
+      border-radius: 8px;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .actions button {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .add { background: #3b82f6; color: #fff; }
+    .mood { background: #a5f3fc; color: #0e7490; }
+    .break { background: #fcd34d; color: #92400e; }
+    footer {
       text-align: center;
       color: #64748b;
       font-size: 13px;
       margin-top: 10px;
     }
     @media (max-width: 600px) {
-      .home-container {
-        max-width: 98vw;
-        padding: 18px 8px 12px 8px;
-      }
-      .horai-header h1 {
-        font-size: 20px;
-      }
-      .HomeCard {
-        padding: 18px 8px;
-      }
+      .home-container { padding: 18px; }
+      header h1 { font-size: 22px; }
     }
   </style>
 </head>
 <body>
   <div class="home-container">
-    <header class="horai-header">
-      <h1>Horai</h1>
+    <header>
+      <h1>Hola Matías, ¿cómo te sentís hoy?</h1>
       <nav class="horai-nav">
         <a href="/logout" class="Button">Cerrar sesión</a>
       </nav>
     </header>
-    <main>
-      <section class="HomeCard">
-        <h2>Bienvenido, Usuario</h2>
-        <p>Este es tu panel principal. Aquí puedes ver tus actividades y acceder a las funciones de Horai.</p>
-      </section>
-    </main>
-    <footer class="horai-footer">
-      <p>© 2025 Horai</p>
-    </footer>
+    <p style="color:#64748b;">Resumen del día y atajos rápidos.</p>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Clima emocional de hoy</h2>
+        <p>😊 Calmo</p>
+        <button class="mood">Registrar nuevo estado</button>
+      </div>
+      <div class="card">
+        <h2>Próximos recordatorios</h2>
+        <ul>
+          <li>✔️ Revisión de tareas - 10:30</li>
+          <li>Llamar a Sofía - 14:00</li>
+          <li>Pausa breve - 16:00</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Frase del día</h2>
+        <p>"Paso a paso. Hoy podés con todo."<br>Respirá, priorizá, y seguí avanzando.</p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Tareas de hoy 3/6</h2>
+        <div class="progress"><div class="progress-bar" style="width:50%"></div></div>
+      </div>
+      <div class="card">
+        <h2>Tiempo de enfoque 25 min</h2>
+        <div class="progress"><div class="progress-bar" style="width:20%"></div></div>
+      </div>
+      <div class="card">
+        <h2>Sueño 6/8 h</h2>
+        <div class="progress"><div class="progress-bar" style="width:75%"></div></div>
+      </div>
+      <div class="card">
+        <h2>Hidratación 5/8 vasos</h2>
+        <div class="progress"><div class="progress-bar" style="width:62%"></div></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="add">+ Añadir tarea</button>
+      <button class="mood">💙 Registrar estado de ánimo</button>
+      <button class="break">☕ Tomar pausa (5 min)</button>
+    </div>
+
+    <div class="card">
+      <h2>Sugerencia del día</h2>
+      <p>Cuando dormís ≥ 7 h, tendés a completar más tareas. Priorizá el descanso hoy.</p>
+    </div>
+
+    <footer>© 2025 Horai</footer>
   </div>
+
   <script>
     // Navegación mock para logout
+    // Este script evita que el enlace se comporte como un link normal,
+    // y redirige manualmente a la ruta /logout cuando se hace clic.
     document.querySelector('.horai-nav .Button').addEventListener('click', function(e) {
       e.preventDefault();
       window.location.href = '/logout';
